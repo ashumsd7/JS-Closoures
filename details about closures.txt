@@ -1,0 +1,110 @@
+	#02 Closures
+	Basics Of Scoping Concepts:
+	Word of caution: Whenever you are declaring variables, always use the prefix let. If you don’t use the let keyword, then the variables are by default created in the global scope.
+```
+let globalLet = "This is a global variable"; 
+   
+function fun() { 
+  let globalLet = "This is a local variable"; 
+  console.log(window.globalLet); // This is a global variable 
+} 
+fun(); 
+  
+```
+
+```
+function pre(){
+    function advance(){
+        i=100;
+    }
+    advance();
+    console.log(i);  // Output is 100;  (becoz I is defined as global in whole function 
+                        // that's why it printed
+}
+pre();          
+```
+Now let's see what will happen when u execute using let or var
+```
+function pre(){
+    function advance(){
+       let i=100;
+    }
+    advance();
+    console.log(i);   // i is not defined 
+}
+pre();
+```
+
+```
+function pre(){
+    function advance(){
+       var i=100;
+    }
+    advance();
+    console.log(i);   // i is not defined 
+}
+pre();
+```
+ Understand this too: just 
+```
+function pre(){
+    var i=100;
+    function advance(){
+        console.log(i);   //output 100
+    }
+    advance();
+    
+}
+pre();
+```
+First Example for Closures:  ref
+```
+function foo(){
+    var b=1;
+    function inner(){
+        return b;
+    }
+    return inner;
+}
+var get_dunc_inner= foo();
+console.log(get_dunc_inner());    //1
+console.log(get_dunc_inner());    //1
+console.log(get_dunc_inner());    //1
+
+```
+"The return statement does not execute the inner function – function is executed only when followed by () , but rather the return statement returns the entire body of the function."
+Definition: "This is closure in action that is inner function can have access to the outer function variables as well as all the global variables."
+or
+"closure is created when a child function keep the environment of the parent scope even after the parent function has already executed"
+One more Example:
+```
+function foo(outer_Arg){
+    function inner(inner_arg){
+        return outer_Arg+inner_arg;
+    }
+    return inner;
+}
+var get_function_inner= foo(5);
+console.log(get_function_inner(4));    //9
+console.log(get_function_inner(3));    //8
+```
+Now let's see closure with in a loop: ref
+```
+function outer(){
+    var arr=[];
+    let i;
+    for (i=0;i<4;++i)
+    {
+        arr[i]= function(){ return i;}
+    }
+    return arr;
+}
+var get_arr= outer(); 
+console.log(get_arr[0]());     //4
+console.log(get_arr[1]());     //4
+console.log(get_arr[2]());     //4
+console.log(get_arr[3]());     //4
+```
+Explanation: Did you guess the right answer? In the above code we have created four closure which point to the variable i which is local variable to the function outer. Closure don’t remember the value of the variable it only points to the variable or stores the reference of the variable and hence, returns the current value. In the above code when we try to update the value of it gets reflected to all because the closure stores the reference.
+
+[usi smay jo value thi] aur point reference  karta hai na ki value rakhta hai.
